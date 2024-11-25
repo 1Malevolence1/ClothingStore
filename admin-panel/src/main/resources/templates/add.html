@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление товара - Атлет+</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Навигационная панель */
+        .navbar {
+            background-color: #007bff;
+            padding: 15px 30px;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-size: 30px;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        h2 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        /* Форма */
+        .form-container {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            background-color: #f1f3f5;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            padding: 12px;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 5px;
+        }
+
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 18px;
+            text-align: center;
+            display: inline-block;
+            margin-top: 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
+        }
+
+        .btn:active {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Навигационная панель -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">Атлет+</a>
+    </div>
+</nav>
+
+<div class="container">
+    <h2>Добавление нового товара</h2>
+
+    <!-- Форма добавления товара -->
+    <div class="form-container">
+        <!-- Форма теперь отправляется с атрибутом enctype="multipart/form-data" -->
+        <form th:action="@{/api/admin/product/add}" method="post" enctype="multipart/form-data">
+
+            <!-- Поле для названия товара -->
+            <div class="form-group">
+                <label for="productName" class="form-label">Название товара</label>
+                <input type="text" id="productName" name="productName" class="form-control" required>
+            </div>
+
+            <!-- Поле для описания товара -->
+            <div class="form-group">
+                <label for="description" class="form-label">Описание</label>
+                <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
+            </div>
+
+            <!-- Поле для выбора категории -->
+            <div class="form-group">
+                <label for="category" class="form-label">Категория</label>
+                <select id="category" name="categoryName" class="form-control" required>
+                    <option value="" disabled selected>Выберите категорию</option>
+                    <!-- Селектор категорий -->
+                    <option th:each="category : ${category}"
+                            th:value="${category.categoryName}"
+                            th:text="${category.categoryName}"></option>
+                </select>
+            </div>
+
+            <!-- Поле для количества товара -->
+            <div class="form-group">
+                <label for="stockQuantity" class="form-label">Количество на складе</label>
+                <input type="number" id="stockQuantity" name="stockQuantity" class="form-control" required>
+            </div>
+
+            <!-- Поле для цены товара -->
+            <div class="form-group">
+                <label for="price" class="form-label">Цена</label>
+                <input type="number" id="price" name="price" class="form-control" required>
+            </div>
+
+
+
+            <!-- Поле для загрузки изображения товара -->
+            <div class="form-group">
+                <label for="multipartFile" class="form-label">Изображение товара</label>
+                <input type="file" id="multipartFile" name="multipartFile" class="form-control" accept="image/*" required>
+            </div>
+
+            <!-- Кнопка отправки формы -->
+            <button type="submit" class="btn">Добавить товар</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

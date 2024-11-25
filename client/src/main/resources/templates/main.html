@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница - Атлет+</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e0f7fa; /* Светлый голубой фон */
+        }
+
+        header {
+            background-color: #00796b; /* Темно-зеленый */
+            color: white;
+            padding: 20px 0; /* Уменьшаем отступы */
+            text-align: center;
+        }
+
+        header img {
+            height: 80px; /* Уменьшаем высоту логотипа */
+            margin-bottom: 10px;
+        }
+
+        /* Стили для текста "О нас" и "Где мы находимся" */
+        .header-links {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+            padding: 5px 15px;
+            background-color: #004d40;
+            border-radius: 5px;
+        }
+
+        .header-links a:hover {
+            background-color: #00796b;
+        }
+
+        /* Стили для боковой панели поиска */
+        .search-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input {
+            padding: 10px;
+            width: 200px;
+            border: 1px solid #00796b;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        .search-button {
+            padding: 10px 20px;
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .catalog {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 товара в строке */
+            gap: 20px;
+            padding: 20px;
+            justify-items: center;
+            padding-bottom: 60px; /* Отступ внизу, чтобы не перекрывать подвал */
+        }
+
+        .product-card {
+            width: 100%;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .product-card h3 {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #00796b; /* Зеленый цвет для названия */
+        }
+
+        .product-card p {
+            color: #616161; /* Серый цвет для описания */
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            background-color: #00796b; /* Темно-зеленый */
+            color: white;
+            text-align: center;
+            padding: 15px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Скрытие и отображение информации */
+        .hidden-content {
+            display: none;
+            margin-top: 20px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+    </style>
+</head>
+<body>
+<header>
+    <img src="/atlet.jpg" alt="Атлет+" />
+</header>
+
+<!-- Текстовые ссылки для разделов "О нас" и "Где мы находимся" -->
+<div class="header-links">
+    <a href="javascript:void(0)" onclick="toggleContent('aboutUs')">О нас</a>
+    <a href="javascript:void(0)" onclick="toggleContent('location')">Где мы находимся</a>
+</div>
+
+<!-- Скрытая информация -->
+<div id="aboutUs" class="hidden-content">
+    <h3>О нас</h3>
+    <p>Мы — компания "Атлет+", специализируемся на продаже спортивных товаров высокого качества. Мы ценим наших клиентов и стремимся предоставить им только лучший сервис. Мы работаем с проверенными поставщиками и гарантируем, что каждый продукт проходит строгий контроль качества.</p>
+</div>
+
+<div id="location" class="hidden-content">
+    <h3>Где мы находимся</h3>
+    <p>Наш офис и склад находятся по адресу: Москва, ул. Примерная, д. 10. Мы открыты для клиентов с понедельника по пятницу с 9:00 до 18:00.</p>
+</div>
+
+<!-- Форма поиска -->
+<div class="search-container">
+    <form th:action="@{/api/client/main/product}" method="get">
+        <input type="text" name="productName" class="search-input" placeholder="Поиск по имени продукта" />
+        <button type="submit" class="search-button">Поиск</button>
+    </form>
+</div>
+
+<div class="catalog">
+    <!-- Здесь будут отображаться товары -->
+    <div th:each="product : ${products}">
+        <a th:href="@{/api/user/product/{productId}(productId=${product.id})}">
+            <div class="product-card">
+                <img th:src="@{http://localhost:8081/api/image/get/{imageName}(imageName=${product.imageUrl})}" alt="product image" />
+                <h3 th:text="${product.productName}"></h3>
+                <h3 th:text="${product.price} + ' руб.'"></h3> <!-- Добавлен текст 'руб.' к цене -->
+            </div>
+        </a>
+    </div>
+</div>
+
+<footer>
+    <p>&copy; 2024 Атлет+. Все права защищены.</p>
+</footer>
+
+<script>
+    // Функция для отображения и скрытия контента
+    function toggleContent(id) {
+        var content = document.getElementById(id);
+        if (content.style.display === "none" || content.style.display === "") {
+            content.style.display = "block";
+        } else {
+            content.style.display = "none";
+        }
+    }
+</script>
+</body>
+</html>

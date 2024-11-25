@@ -1,0 +1,7 @@
+spring:
+    application:
+        name: admin-panel
+
+
+server:
+    port: 8083

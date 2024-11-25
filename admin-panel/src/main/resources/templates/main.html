@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ Панель - Атлет+</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f6f9; /* Светлый фон */
+            color: #333;  /* Темный текст для контраста */
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        /* Навигационная панель */
+        .navbar {
+            background-color: #333;
+            padding: 15px 30px;
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .navbar img {
+            width: 50px;
+            margin-right: 10px;
+        }
+
+        /* Контейнер для контента */
+        .container {
+            margin-top: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: 26px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        /* Стиль для кнопок */
+        .btn {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        /* Кнопка "Подробнее" */
+        .btn-info {
+            background-color: #ff6600;  /* Ярко-оранжевый для выделения */
+            font-size: 18px;
+            padding: 14px 28px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .btn-info:hover {
+            background-color: #e65c00;  /* Темный оранжевый на ховер */
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(255, 102, 0, 0.3);
+        }
+
+        /* Стили для таблицы */
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        .table th, .table td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #e0e0e0;
+            color: #444;
+            font-size: 16px;
+        }
+
+        .table th {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f7f7f7;
+        }
+
+        .table td a {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .table td a:hover {
+            color: #0056b3;
+        }
+
+        /* Стили для закрытия формы */
+        .close-form-btn {
+            background-color: #6c757d;
+        }
+
+        .close-form-btn:hover {
+            background-color: #5a6268;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Навигационная панель -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container-fluid">
+        <img src="logo.png" alt="Logo" class="logo">
+        <a class="navbar-brand" href="#">Атлет+</a>
+    </div>
+</nav>
+
+<div class="container">
+    <h2>Управление товарами</h2>
+
+    <!-- Кнопка для показа формы добавления товара -->
+    <!-- Здесь добавляем ссылку на страницу создания товара -->
+    <form action="#" th:action="@{/api/admin/product/add}" method="get">
+        <button type="submit" class="btn btn-primary">Добавить товар</button>
+    </form>
+
+    <!-- Таблица товаров -->
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Название</th>
+            <th scope="col">Категория</th>
+            <th scope="col">Количество на складе</th>
+            <th scope="col">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Цикл по продуктам с использованием Thymeleaf -->
+        <tr th:each="product : ${products}">
+            <td th:text="${product.id}">ID отсутствует</td>
+            <td th:text="${product.productName != null ? product.productName : 'Название отсутствует'}"></td>
+            <td th:text="${product.category != null ? product.category.categoryName : 'Категория отсутствует'}"></td>
+            <td th:text="${product.stockQuantity != null ? product.stockQuantity : 'Количество отсутствует'}"></td>
+            <td>
+                <!-- Кнопка Подробнее -->
+                <a th:href="@{/api/admin/product/{productId}(productId=${product.id})}" class="btn btn-info">Подробнее</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
